@@ -1,4 +1,6 @@
 Changes
+inc/File/Path.pm
+inc/FindBin.pm
 inc/Module/Install.pm
 inc/Module/Install/AuthorTests.pm
 inc/Module/Install/Base.pm
@@ -8,7 +10,6 @@ inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/TestBase.pm
-inc/Module/Install/TestVars.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 inc/Spiffy.pm
@@ -23,7 +24,9 @@ MANIFEST			This list of files
 META.yml
 README
 t/00_compile.t
-t/01_env.t
+t/01-args.t
+t/02-prompt.t
+t/03-complex.t
 xt/01_podspell.t
 xt/02_perlcritic.t
 xt/03_pod.t

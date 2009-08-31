@@ -3,7 +3,7 @@ package Module::Install::TestVars;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.01_02';
 
 use base qw(Module::Install::Base);
 
@@ -11,15 +11,6 @@ use Getopt::Long;
 use Term::ReadLine;
 use Term::UI;
 use Text::ASCIITable;
-
-=pod
-
-  test_vars 
-    DSN      => +{ default => 'dbi:mysql:dbname=test', prompt => 'DBI DSN' },
-    USER     => +{ default => 'root', prompt => 'DBI USER' },
-    PASSWORD => +{ default => '', prompt => 'DBI PASSWORD' };
-
-=cut
 
 sub test_vars {
     my ( $self, %config ) = @_;
@@ -61,19 +52,26 @@ sub test_vars {
         unless ( exists $test_vars{$var} ) {
             $config{$var}->{prompt} ||= 'Input ' . $var;
 
-            do {
-                $test_vars{$var} = $term->get_reply(
-                    ( exists $config{$var}->{default} )
+            my %args = (
+                (exists $config{$var}->{default})
                     ? (
-                        prompt  => $config{$var}->{prompt},
-                        default => $config{$var}->{default}
-                      )
-                    : ( prompt => $config{$var}->{prompt} . ': ' ),
-                    (
-                        exists $config{$var}->{choices}
-                          && ref $config{$var}->{choices}
-                      ) ? ( choices => $config{$var}->{choices} ) : ()
-                );
+                        prompt  => $config{$var}{prompt},
+                        default => $config{$var}{default},
+                    ) : (
+                        prompt => $config{$var}{prompt},
+                    ),
+                ( exists $config{$var}->{choices} && ref $config{$var}->{choices} )
+                    ? (
+                        choices => $config{$var}{choices},
+                        print_me => 'Choise number'
+                    ) : (),
+            );
+
+            do {
+                $test_vars{$var} = $term->get_reply(%args);
+                $test_vars{$var} = $config{$var}{choices}->[$test_vars{$var} - 1] if (ref $config{$var}{choices});
+
+                
             } until ( defined $test_vars{$var} );
         }
         else {
@@ -117,20 +115,24 @@ sub test {
 1;
 __END__
 
-=for stopwords vars
+=for stopwords vars Makefile.PL
 
 =head1 NAME
 
-Module::Install::TestVars - Passing variables before running tests
+Module::Install::TestVars - Setting and Passing test variables.
 
 =head1 SYNOPSIS
+
+In your Makefile.PL, 
 
   use inc::Module::Install;
 
   test_vars
-    TEST_DBI_DSN      => 'dbi:mysql:dbname=test',
-    TEST_DBI_USER     => 'root',
-    TEST_DBI_PASSWORD => '',
+    TEST_DBI_DSN      => +{ default => 'dbi:mysql:dbname=test', prompt => 'input DBI DSN param' },
+    TEST_DBI_USER     => +{ default => 'root', prompt => 'input DBI USER param', },
+    TEST_DBI_PASSWORD => +{ default => '', prompt => 'input DBI PASSWORD param', };
+
+Running Makefile.PL, asking values and passing variables to tests.
 
 In your test,
 
@@ -144,13 +146,14 @@ In your test,
 
 =head1 DESCRIPTION
 
-Module::Install::TestVars is module fetching test setting variables via %ENV vars.
+Module::Install::TestVars is module asking and setting test variable.
+Please see unit tests for usage details.
 
 =head1 METHODS
 
 =head2 test_vars %vars
 
-key-value.
+key-setting.
 
 =head1 AUTHOR
 

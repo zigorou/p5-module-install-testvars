@@ -1,4 +1,9 @@
 Revision history for Perl extension Module::Install::TestVars
 
+0.01_02 Mon Aug 31 16:17:23 2009
+        - Not compatible 0.01_01, test_vars(%vars) args format changed.
+        - Support command line options (c.f. perl Makefile.PL TEST_DBI_DSN="dbi:mysql:dbname=test")
+        - Support interactive setting.
+
 0.01_01 Fri Aug 28 15:15:19 2009
         - First release
