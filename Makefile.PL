@@ -10,10 +10,10 @@ requires 'Module::Install';
 tests 't/*.t';
 author_tests 'xt';
 
-test_vars
-    "TEST_VAR_FOO" => 1,
-    "TEST_VAR_BAR" => "abc",
-    "TEST_VAR_BAZ" => 1.35;
+test_vars 
+    "TEST_VAR_FOO" => +{ prompt => 'Foo', default => 'foo' },
+    "TEST_VAR_BAR" => +{ prompt => 'Bar', default => 'bar' },
+    "TEST_VAR_BAZ" => +{ choices => [qw/1 3 6/] };
 
 build_requires 'Test::More';
 use_test_base;
