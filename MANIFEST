@@ -24,10 +24,10 @@ MANIFEST			This list of files
 META.yml
 README
 t/00_compile.t
-t/01-args.t
-t/02-prompt.t
-t/03-complex.t
+xt/01_args.t
 xt/01_podspell.t
 xt/02_perlcritic.t
+xt/02_prompt.t
+xt/03_complex.t
 xt/03_pod.t
 xt/perlcriticrc

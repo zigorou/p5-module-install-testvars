@@ -1,4 +1,5 @@
 use strict;
+use lib qw(./lib);
 use Test::More;
 
 use File::Path;
@@ -8,6 +9,7 @@ use Term::UI;
 plan tests => 3;
 
 {
+    use Module::Install::TestVars;
     use inc::Module::Install;
     
     no warnings 'redefine';

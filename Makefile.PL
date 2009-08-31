@@ -16,7 +16,10 @@ author_tests 'xt';
 build_requires 'File::Path';
 build_requires 'FindBin';
 build_requires 'Test::More';
+build_requires 'Module::Install::Base';
+build_requires 'Module::Install::TestVars';
 
 use_test_base;
 auto_include;
 WriteAll;
+
